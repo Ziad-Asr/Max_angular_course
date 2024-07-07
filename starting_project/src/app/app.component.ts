@@ -15,11 +15,13 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
   users = DUMMY_USERS;
+  selectedUserId = 'u1';
 
-  userName = '';
+  get selectedUser() {
+    return this.users.find((user) => user.id === this.selectedUserId)!;
+  }
 
-  onSelect(event: { id: string; name: string }) {
-    console.log(event.id);
-    this.userName = event.name;
+  onSelect(id: string) {
+    this.selectedUserId = id;
   }
 }
