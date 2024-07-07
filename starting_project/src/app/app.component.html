@@ -9,5 +9,7 @@
     }
   </ul>
 
+  @if (selectedUserId) {
   <app-tasks [name]="selectedUser?.name" />
+  }
 </main>
