@@ -6,6 +6,9 @@ import { Component } from '@angular/core';
   imports: [],
   templateUrl: './traffic.component.html',
   styleUrl: './traffic.component.css',
+  host: {
+    class: 'traffic',
+  },
 })
 export class TrafficComponent {
   dummyTrafficData = [

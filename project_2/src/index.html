@@ -1,13 +1,23 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>CmpDeepDive</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>CmpDeepDive</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
 </html>
+
+<!-- when I have a element i want it to be reusable -->
+<!-- I will make a separet component for it, and use the selector of it in any other component. -->
+<!-- If the reusable component contain HTML from another component -->
+<!-- {{ CONTENT PROJECTION }} -->
+<!-- 1) use <ng-content /> -->
+<!-- 2) If I will use >1 <ng-content /> ==>> use (select property on the <ng-content />) to specify specific span or div or ... of the projected code  -->
+<!-- 3)  To pass styles when using the (ng-content) {not get encasulated here only} ==>> (Use encapsulation: ViewEncapsulation.None) -->
+<!-- 4) If I want to put styles of the (wrapper) of my resuable component, but I want to put these styles inside me resuable ==>> {{:host}}  -->
+<!-- 4) or use ==>> [[[[ host: { class: 'controll' } ]]]] -->

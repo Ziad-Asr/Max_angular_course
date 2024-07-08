@@ -7,5 +7,8 @@ import { TicketComponent } from './ticket/ticket.component';
   templateUrl: './tickets.component.html',
   styleUrl: './tickets.component.css',
   imports: [TicketComponent],
+  host: {
+    class: 'tickets',
+  },
 })
 export class TicketsComponent {}
