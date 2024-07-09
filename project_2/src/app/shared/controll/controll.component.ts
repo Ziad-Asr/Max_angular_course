@@ -1,5 +1,7 @@
 import {
   Component,
+  contentChild,
+  ContentChild,
   ElementRef,
   HostBinding,
   HostListener,
@@ -28,9 +30,18 @@ export class ControllComponent {
 
   private element = inject(ElementRef); // Get access to the component host html
 
+  // @ContentChild('input') private control?: ElementRef<
+  //   HTMLFormElement | HTMLTextAreaElement
+  // >;
+  private control =
+    contentChild<ElementRef<HTMLFormElement | HTMLTextAreaElement>>('input');
+
   onClick() {
     console.log('Clicked!');
     console.log(this.element);
+
+    // console.log(this.control);
+    console.log(this.control());
   }
 
   label = input.required<string>();
