@@ -1,4 +1,5 @@
 import {
+  AfterContentInit,
   Component,
   contentChild,
   ContentChild,
@@ -22,7 +23,7 @@ import {
     '(click)': 'onClick()',
   }, // Use to put style of the class (control) in a wrapper div around theis reusable componenet.
 })
-export class ControllComponent {
+export class ControllComponent implements AfterContentInit {
   // @HostBinding('class') className = 'controll'; // Insted of (host)
   // @HostListener('click') onClick() {
   //   console.log('Clicked!');
@@ -35,6 +36,11 @@ export class ControllComponent {
   // >;
   private control =
     contentChild<ElementRef<HTMLFormElement | HTMLTextAreaElement>>('input');
+
+  ngAfterContentInit(): void {
+    console.log('AfetContentInit');
+    console.log(this.control()); // Get loaded
+  }
 
   onClick() {
     console.log('Clicked!');
