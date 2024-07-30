@@ -1,5 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
+import { InvestmentService } from '../investment.service';
 
 @Component({
   selector: 'app-investment-results',
@@ -9,18 +10,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: './investment-results.component.css',
 })
 export class InvestmentResultsComponent {
-  @Input() results?: {
-    year: number;
-    interest: number;
-    valueEndOfYear: number;
-    annualInvestment: number;
-    totalInterest: number;
-    totalAmountInvested: number;
-  }[];
+  private investmentService = inject(InvestmentService);
+
+  results = this.investmentService.resultsData.asReadonly();
 }
-
-// import type => Make sure that the import is a ( type or interface )
-
-// ? , !
-// ? => {{ Might }} have a value of that shape
-// ! => Will {{ always }} have a value of that shape
