@@ -7,7 +7,7 @@ import { TasksService } from '../tasks.service';
   selector: 'app-tasks-list',
   standalone: true,
   templateUrl: './tasks-list.component.html',
-  styleUrl: './tasks-list.component.css',
+  styleUrls: ['./tasks-list.component.css'],
   imports: [TaskItemComponent],
 })
 export class TasksListComponent {
@@ -20,7 +20,7 @@ export class TasksListComponent {
         return this.taskService
           .allTasks()
           .filter((task) => task.status === 'OPEN');
-      case 'in_progress':
+      case 'in-progress':
         return this.taskService
           .allTasks()
           .filter((task) => task.status === 'IN_PROGRESS');
@@ -29,7 +29,7 @@ export class TasksListComponent {
           .allTasks()
           .filter((task) => task.status === 'DONE');
       default:
-        return this.taskService.allTasks;
+        return this.taskService.allTasks();
     }
   });
 

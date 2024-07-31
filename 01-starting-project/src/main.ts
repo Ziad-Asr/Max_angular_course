@@ -11,6 +11,9 @@ bootstrapApplication(AppComponent).catch((err) => console.error(err));
 
 // 1)[asReadOnly()] -- or -- 2)[Getter function] -- (+ {{ private }} keyword on the protected varuable)
 
+// ______________________________________________________________________________________________________________________________
+// ______________________________________________________________________________________________________________________________
+
 // Injecting Services
 //--------------------
 // 1) private taskService: TasksService;
@@ -29,3 +32,11 @@ bootstrapApplication(AppComponent).catch((err) => console.error(err));
 
 // 3) private taskService = inject(TasksService);
 // ** The best way
+
+// ______________________________________________________________________________________________________________________________
+// ______________________________________________________________________________________________________________________________
+
+// @Injectable({ providedIn: 'root' })
+// provider: [TasksService] => called {{ Element injector }}
+
+// I can use the provder code and remove the injectable part, to make an (instance) of that service inside a (specific component and it's children).
