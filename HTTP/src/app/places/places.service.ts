@@ -1,17 +1,16 @@
-import { inject, Injectable, signal } from '@angular/core';
-
-import { Place } from './place.model';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap, throwError } from 'rxjs';
+
+import { Place } from './place.model';
 import { ErrorService } from '../shared/error.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlacesService {
-  private httpClient = inject(HttpClient);
   private errorService = inject(ErrorService);
-
+  private httpClient = inject(HttpClient);
   private userPlaces = signal<Place[]>([]);
 
   loadedUserPlaces = this.userPlaces.asReadonly();
@@ -19,14 +18,14 @@ export class PlacesService {
   loadAvailablePlaces() {
     return this.fetchPlaces(
       'http://localhost:3000/places',
-      'Something went wrong fetching the available places'
+      'Something went wrong fetching the available places. Please try again later.'
     );
   }
 
   loadUserPlaces() {
     return this.fetchPlaces(
       'http://localhost:3000/user-places',
-      'Something went wrong fetching your favorite places'
+      'Something went wrong fetching your favorite places. Please try again later.'
     ).pipe(
       tap({
         next: (userPlaces) => this.userPlaces.set(userPlaces),
@@ -37,7 +36,7 @@ export class PlacesService {
   addPlaceToUserPlaces(place: Place) {
     const prevPlaces = this.userPlaces();
 
-    if (prevPlaces.some((place) => place.id === place.id)) {
+    if (!prevPlaces.some((p) => p.id === place.id)) {
       this.userPlaces.set([...prevPlaces, place]);
     }
 
@@ -48,31 +47,39 @@ export class PlacesService {
       .pipe(
         catchError((error) => {
           this.userPlaces.set(prevPlaces);
-
           this.errorService.showError('Failed to store selected place.');
+          return throwError(() => new Error('Failed to store selected place.'));
+        })
+      );
+  }
 
+  removeUserPlace(place: Place) {
+    const prevPlaces = this.userPlaces();
+
+    if (prevPlaces.some((p) => p.id === place.id)) {
+      this.userPlaces.set(prevPlaces.filter((p) => p.id !== place.id));
+    }
+
+    return this.httpClient
+      .delete('http://localhost:3000/user-places/' + place.id)
+      .pipe(
+        catchError((error) => {
+          this.userPlaces.set(prevPlaces);
+          this.errorService.showError('Failed to remove the selected place.');
           return throwError(
-            () => new Error('Failedd to  store  selected place.')
+            () => new Error('Failed to remove the selected place.')
           );
         })
       );
   }
 
-  removeUserPlace(place: Place) {}
-
   private fetchPlaces(url: string, errorMessage: string) {
-    return this.httpClient
-      .get<{ places: Place[] }>(url, {
-        // observe: 'response', // Gives you more info like the type of the response, the status code and ...
-        // observe: 'event',    // The same as response, but returns an object with type property when ((sending the request)), allows you to perform deifferent action on different points of time {afetr request sent, after response came back}
+    return this.httpClient.get<{ places: Place[] }>(url).pipe(
+      map((resData) => resData.places),
+      catchError((error) => {
+        console.log(error);
+        return throwError(() => new Error(errorMessage));
       })
-      .pipe(
-        // You can transform data before subscribing to it.
-        map((resData) => resData.places),
-        catchError((error) => {
-          console.log(error);
-          return throwError(() => new Error(errorMessage));
-        })
-      );
+    );
   }
 }
