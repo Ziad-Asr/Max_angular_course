@@ -17,18 +17,15 @@ export class UserPlacesComponent implements OnInit {
   private placesService = inject(PlacesService);
   private destroyRef = inject(DestroyRef);
 
-  places = signal<Place[] | undefined>(undefined);
   isFetching = signal<boolean>(false);
   error = signal<string>('');
+
+  places = this.placesService.loadedUserPlaces;
 
   ngOnInit() {
     this.isFetching.set(true);
 
     const subscription = this.placesService.loadUserPlaces().subscribe({
-      next: (resData) => {
-        this.places.set(resData);
-        this.isFetching.set(false);
-      },
       error: (err: Error) => {
         this.error.set(err.message);
         this.isFetching.set(false);

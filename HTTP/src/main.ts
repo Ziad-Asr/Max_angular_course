@@ -14,3 +14,5 @@ bootstrapApplication(AppComponent, { providers: [provideHttpClient()] }).catch(
 // }
 
 // pipe(map((resData) => resData.places)) => You can transform data before subscribing to it.
+
+// .tap() => make a login on an (( observable )) without subscribing to it.
