@@ -4,6 +4,7 @@ import { PlacesComponent } from '../places.component';
 import { HttpClient } from '@angular/common/http';
 import { Place } from '../place.model';
 import { catchError, map, throwError } from 'rxjs';
+import { PlacesService } from '../places.service';
 
 @Component({
   selector: 'app-user-places',
@@ -13,7 +14,7 @@ import { catchError, map, throwError } from 'rxjs';
   imports: [PlacesContainerComponent, PlacesComponent],
 })
 export class UserPlacesComponent implements OnInit {
-  private httpClient = inject(HttpClient);
+  private placesService = inject(PlacesService);
   private destroyRef = inject(DestroyRef);
 
   places = signal<Place[] | undefined>(undefined);
@@ -23,33 +24,19 @@ export class UserPlacesComponent implements OnInit {
   ngOnInit() {
     this.isFetching.set(true);
 
-    const subscription = this.httpClient
-      .get<{ places: Place[] }>('http://localhost:3000/user-places')
-      .pipe(
-        map((resData) => resData.places),
-        catchError((error) => {
-          console.log(error);
-          this.error.set('Something went wrong fetching your favorite places');
-          this.isFetching.set(false);
-          return throwError(
-            () =>
-              new Error('Something went wrong fetching your favorite places')
-          );
-        })
-      )
-      .subscribe({
-        next: (resData) => {
-          this.places.set(resData);
-          this.isFetching.set(false);
-        },
-        error: (err: Error) => {
-          this.error.set(err.message);
-          this.isFetching.set(false);
-        },
-        complete: () => {
-          this.isFetching.set(false);
-        },
-      });
+    const subscription = this.placesService.loadUserPlaces().subscribe({
+      next: (resData) => {
+        this.places.set(resData);
+        this.isFetching.set(false);
+      },
+      error: (err: Error) => {
+        this.error.set(err.message);
+        this.isFetching.set(false);
+      },
+      complete: () => {
+        this.isFetching.set(false);
+      },
+    });
 
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
