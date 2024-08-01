@@ -5,8 +5,8 @@ import { AppComponent } from './app/app.component';
 bootstrapApplication(AppComponent).catch((err) => console.error(err));
 
 //**** Made on signals
-// this.tasks.update((tasks) => [...tasks, newTask]);
 // this.tasks.set([newTask]);
+// this.tasks.update((tasks) => [...tasks, newTask]);
 // tasks = computed()  => Returns a signal that depends on other signals, and recomputed if any signal of those changed.
 
 // 1)[asReadOnly()] -- or -- 2)[Getter function] -- (+ {{ private }} keyword on the protected varuable)
