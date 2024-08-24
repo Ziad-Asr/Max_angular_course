@@ -26,4 +26,12 @@ bootstrapApplication(AppComponent).catch((err) => console.error(err));
 // ex;- (parent componet) contains ( 2 child components ) if I put [ changeDetection: ChangeDetectionStrategy.OnPus ] in the parent => It will never check for changes unless 1)App init 2)event or change happens in ((( 1-inside this compoent 2-inside one of it's children ))) so then the changes check work for all this subtree (parent + 2 children)
 // But if a change made here inside any of these 3 components, the (change detection) will work for (all the app) again.
 // Because the role of this solution is to (avoid checking these {{subtree}} unessiserly) but if an action happens inside it (change detection will work normally for all the other components)
-// ************** This is not working with ( Signals )
+// ************** This is not without working properly (normal variables + services), it works will with (signals + services).
+// => because if the change detection is disabled because I used that code [ changeDetection: ChangeDetectionStrategy.OnPush ], so if the value changes in the (service) {it does not reflect in the component}, so I should (handel that manually) using {{ RXJS }}
+// =>{but signals handels that from its own}.
+// when using [ changeDetection: ChangeDetectionStrategy.OnPush ] ====>>>>> 1-(RXJS + normal variables + services) 2- (signals + services)
+// (RXJS + normal variables + services) => in RXJs we create an observable in  the service and use .next(new value) on it, and use (async) pipe in the template
+
+//*************** (Not recommended) (V18) I can use sinals in all the app + removing the (zone.js)
+
+// Check whatsapp voices and photos
